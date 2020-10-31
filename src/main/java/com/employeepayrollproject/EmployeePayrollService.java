@@ -1,37 +1,47 @@
 package com.employeepayrollproject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class EmployeePayrollService {
-    public ArrayList<EmployeePayroll> employeePayrollList;
+class EmployeePayrollService {
+    public enum IOService {CONSOLE_IO ,FILE_IO, DB_IO, REST_IO } ;
+    private List<EmployeePayroll>  employeePayrollList;
 
-    public EmployeePayrollService(ArrayList<EmployeePayroll> employeePayrollList) {
+    public EmployeePayrollService() {
+
+    }
+    public EmployeePayrollService(List<EmployeePayroll> employeePayrollList) {
         this.employeePayrollList = employeePayrollList;
     }
 
     public static void main(String[] args) {
         ArrayList<EmployeePayroll> employeePayrollList = new ArrayList<>();
         EmployeePayrollService employeePayrollService = new EmployeePayrollService(employeePayrollList);
-        Scanner scan = new Scanner(System.in);
-        employeePayrollService.readEmployeePayrollData(scan);
-        employeePayrollService.writeEmployeePayrollData();
+        Scanner input = new Scanner(System.in);
+        employeePayrollService.readEmployeePayrollData(input);
+        employeePayrollService.writeEmployeePayrollData(EmployeePayrollService.IOService.CONSOLE_IO);
     }
 
-    private void writeEmployeePayrollData() {
-        System.out.println("Employee data: " + employeePayrollList);
+    public void writeEmployeePayrollData(EmployeePayrollService.IOService ioService) {
+        if(ioService.equals(EmployeePayrollService.IOService.CONSOLE_IO))
+            System.out.println("\n Writing employee pay roll to console \n " + employeePayrollList);
+        else if (ioService.equals(EmployeePayrollService.IOService.FILE_IO))
+            new EmployeePayrollFileIOService().writeData(employeePayrollList);
     }
 
-    private void readEmployeePayrollData(Scanner scan) {
+    private void readEmployeePayrollData(Scanner input) {
         System.out.println("Enter employee id: ");
-        int id = scan.nextInt();
+        int id = input.nextInt();
         System.out.println("Enter employee name: ");
-        String name = scan.next();
+        String name = input.next();
         System.out.println("Enter employee salary: ");
-        double salary = scan.nextInt();
-        employeePayrollList.add(new EmployeePayroll(id , name , salary));
+        double salary = input.nextDouble();
+        employeePayrollList.add(new EmployeePayroll(id, name, salary));
+    }
 
+    @Override
+    public String toString() {
+        return "Writing employee pay roll " + "employeePayrollList=" + employeePayrollList + '}';
     }
 }
-
-
