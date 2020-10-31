@@ -1,6 +1,8 @@
 package com.employeepayrollproject;
 
 import java.util.Arrays;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 public class EmployeePayrollTest {
@@ -14,6 +16,8 @@ public class EmployeePayrollTest {
         EmployeePayrollService employeePayrollService  ;
         employeePayrollService = new EmployeePayrollService(Arrays.asList(arrayOfEmps));
         employeePayrollService.writeEmployeePayrollData(EmployeePayrollService.IOService.FILE_IO);
+        employeePayrollService.printData(EmployeePayrollService.IOService.FILE_IO);
+        long entries = employeePayrollService.countEntries(EmployeePayrollService.IOService.FILE_IO);
+        Assert.assertEquals(3 , entries);
     }
-
 }
